@@ -2,8 +2,6 @@ import numpy as np
 import cv2
 import sys
 
-debugging_mode = sys.argv[3]
-
 def perspective_warp(img, 
                      dst_size=(1280,720),
                      src=np.float32([(0.38,0.7),(0.63,0.7),(0.1,1),(1,1)]),
@@ -161,7 +159,7 @@ def combine_thresh(img, s_thresh=(100, 255), l_thresh=(120, 255)):
     # Create an all zeros numpy arrays with the same size as the image
     mask = np.zeros_like(color_combined)
     # Setting the region of interest
-    region_of_interest_vertices = np.array([[220,height-1], [width/2, int(0.55*height)], [width-80, height-1]], dtype=np.int32)
+    region_of_interest_vertices = np.array([[180,height-1], [width/2, int(0.55*height)], [width-80, height-1]], dtype=np.int32)
     # Apply the region of interest
     cv2.fillPoly(mask, [region_of_interest_vertices], 1)
     thresholded = cv2.bitwise_and(color_combined, mask)
@@ -396,26 +394,30 @@ def vid_pipeline(img):
     fontColor = (255, 255, 255)
     fontSize=0.7
     cv2.putText(img, 'Lane Curvature: {:.0f} m'.format(lane_curve), (540, 620), font, fontSize, fontColor, 2)
-
+    cv2.putText(img, 'Vehicle offset: {:.4f} m'.format(curverad[2]), (540, 650), font, fontSize, fontColor, 2)
     img_tile = concat_tile_resize([[img],
                                    [img_thresh ,img_warp , out_img]])
 
     img_tile = cv2.resize(img_tile,(1280,720))
-    if debugging_mode == "1":
-        ret_img = img_tile
-    else:
-        ret_img = img
+    ret_img = img
+    if 'debugging_mode' in globals():
+        if debugging_mode == "1":
+            ret_img = img_tile
+            
     return ret_img
 
 
+if __name__ == "__main__":
+    debugging_mode = 0
+    if len(sys.argv) == 3:
+        debugging_mode = sys.argv[3]
+    right_curves, left_curves = [],[]
+    from moviepy.editor import VideoFileClip
 
-right_curves, left_curves = [],[]
-from moviepy.editor import VideoFileClip
-
-myclip = VideoFileClip(sys.argv[1])
-output_vid = sys.argv[2]
-clip = myclip.fl_image(vid_pipeline)
-clip.write_videofile(output_vid, audio=False)
+    myclip = VideoFileClip(sys.argv[1])
+    output_vid = sys.argv[2]
+    clip = myclip.fl_image(vid_pipeline)
+    clip.write_videofile(output_vid, audio=False)
 
 
 

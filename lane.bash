@@ -2,6 +2,7 @@
 
 DEBUG_VAR=0
 OUTPUT_VID=0
+INPUT_VID=0
 
 if [[ $# -eq 0 || ($# -eq 1 && ${1::1} == "-") ]] ; then
         echo "[ERROR] No input file specfied"
@@ -30,11 +31,20 @@ while getopts "hd" OPTION; do
                         ;;
         esac
 done
+if [[ $1 == "-d" ]] ; then
+        INPUT_VID=$2
+        if [[ -f $2 &&  -n $3 ]] ; then
+                OUTPUT_VID=$3
+        elif [[ -f $2 ]] ; then
+                OUTPUT_VID="lane_detection.mp4"
+        fi  
+else
+        INPUT_VID=$1
+        if [[ -f $1 &&  -n $2 ]] ; then
+                OUTPUT_VID=$2
+        elif [[ -f $1 ]] ; then
+                OUTPUT_VID="lane_detection.mp4"
+        fi  
+fi  
 
-if [[ -f $2 &&  -n $3 && $3 != "-d" ]] ; then
-        OUTPUT_VID=$3
-elif [[ -f $2 ]] ; then
-        OUTPUT_VID="lane_detection.mp4"
-fi     
-
-python3 lane.py $2 $OUTPUT_VID $DEBUG_VAR 
+python3 lane.py $INPUT_VID $OUTPUT_VID $DEBUG_VAR 
