@@ -409,11 +409,10 @@ def vid_pipeline(img):
 
 if __name__ == "__main__":
     debugging_mode = 0
-    if len(sys.argv) == 3:
+    if len(sys.argv) > 1:
         debugging_mode = sys.argv[3]
     right_curves, left_curves = [],[]
     from moviepy.editor import VideoFileClip
-
     myclip = VideoFileClip(sys.argv[1])
     output_vid = sys.argv[2]
     clip = myclip.fl_image(vid_pipeline)
