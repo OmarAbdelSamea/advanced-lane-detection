@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import sys
+from moviepy.editor import VideoFileClip
 
 def perspective_warp(img, 
                      dst_size=(1280,720),
@@ -407,16 +408,12 @@ def vid_pipeline(img):
     return ret_img
 
 
-if __name__ == "__main__":
-    debugging_mode = 0
-    if len(sys.argv) > 1:
-        debugging_mode = sys.argv[3]
+def pipeline_lane_only(input_file, output_file, debug):
+    debugging_mode = debug
     right_curves, left_curves = [],[]
-    from moviepy.editor import VideoFileClip
-    myclip = VideoFileClip(sys.argv[1])
-    output_vid = sys.argv[2]
+    myclip = VideoFileClip(input_file)
     clip = myclip.fl_image(vid_pipeline)
-    clip.write_videofile(output_vid, audio=False)
+    clip.write_videofile(output_file, audio=False)
 
 
 
