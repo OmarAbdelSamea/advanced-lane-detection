@@ -402,13 +402,14 @@ def vid_pipeline(img):
     img_tile = cv2.resize(img_tile,(1280,720))
     ret_img = img
     if 'debugging_mode' in globals():
-        if debugging_mode == "1":
+        if debugging_mode:
             ret_img = img_tile
             
     return ret_img
 
 
 def pipeline_lane_only(input_file, output_file, debug):
+    global debugging_mode
     debugging_mode = debug
     right_curves, left_curves = [],[]
     myclip = VideoFileClip(input_file)
