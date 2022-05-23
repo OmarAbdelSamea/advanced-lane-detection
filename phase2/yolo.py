@@ -13,6 +13,7 @@ def load_weights(tiny):
     """ 
     global net
     global layers_names
+    global labels
     if(tiny):
         weights_path = './yolo/yolov4-tiny.weights'
         config_path = './yolo/yolov4-tiny.cfg'
