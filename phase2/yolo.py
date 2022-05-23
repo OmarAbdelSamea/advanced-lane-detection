@@ -54,7 +54,7 @@ def detect_yolo(img):
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
-    idxs = cv2.dnn.NMSBoxes(boxes, confidences, 0.8, 0.3)
+    idxs = cv2.dnn.NMSBoxes(boxes, confidences, 0.6, 0.3)
     idxArr = np.asarray(idxs)
     for n in idxArr.flatten():
         (x, y) = (boxes[n][0], boxes[n][1])
