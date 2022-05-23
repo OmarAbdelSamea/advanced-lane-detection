@@ -12,7 +12,7 @@ def lane_and_yolo_pipeline(input_file, output_file, tiny):
     yolo.load_weights(tiny)
     project_video = VideoFileClip(input_file)
     white_clip = project_video.fl_image(lane_and_yolo) 
-    white_clip.write_videofile(output_file, audio=False)
+    white_clip.write_videofile(output_file, audio=False, threads=8, preset='ultrafast')
 
 if __name__ == "__main__":
     input_file = sys.argv[2]

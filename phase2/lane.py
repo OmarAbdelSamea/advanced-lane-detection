@@ -413,7 +413,7 @@ def pipeline_lane_only(input_file, output_file, debug):
     right_curves, left_curves = [],[]
     myclip = VideoFileClip(input_file)
     clip = myclip.fl_image(vid_pipeline)
-    clip.write_videofile(output_file, audio=False)
+    clip.write_videofile(output_file, audio=False, threads=8, preset='ultrafast')
 
 
 

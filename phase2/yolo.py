@@ -75,4 +75,4 @@ def pipeline_yolo_only(input_file, output_file, tiny):
     load_weights(tiny)
     project_video = VideoFileClip(input_file)
     white_clip = project_video.fl_image(detect_yolo)
-    white_clip.write_videofile(output_file, audio=False,threads=4, preset='ultrafast')
+    white_clip.write_videofile(output_file, audio=False,threads=8, preset='ultrafast')
